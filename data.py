@@ -41,5 +41,28 @@ def count_referals(id):
 	db.close()
 	return c
 	
+def save_recipe(recipe, name, id):
+	db = sqlite3.connect('data.db')
+	cursor = db.cursor()
+	print(name)
+	exist_name = cursor.execute("SELECT name FROM Recipes WHERE name = ?",(name,)).fetchone()
+	#доделать, чтобы возвращалось сообщение о имеющимся рецепте
+	if exist_name is None:
+	    cursor.execute("INSERT INTO Recipes (id, name, recipe) VALUES (?,?,?)",(id, name, recipe))
+	    db.commit()
+	else:
+	    print("такой уже есть")
+	      
+	db.close()
+	
+def all_recipes(id):
+	db = sqlite3.connect('data.db')
+	cursor = db.cursor()
+	
+	c = cursor.execute("SELECT * FROM Recipes WHERE id =  ?",(id,)).fetchall()
+
+	db.commit()
+	db.close()
+	return c
 	
 create_db()
